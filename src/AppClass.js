@@ -3,15 +3,29 @@ import React, { Component } from 'react'
 class App extends Component {
   state = {
     count: 0,
-    isOn: false
+    isOn: false,
+    x: null,
+    y: null
   }
 
   componentDidMount() {
     document.title = `You have clicked ${this.state.count} times!`
+    window.addEventListener('mousemove', this.handleMouseMove)
   }
 
   componentDidUpdate() {
     document.title = `You have clicked ${this.state.count} times!`
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('mousemove', this.handleMouseMove)
+  }
+
+  handleMouseMove = event => {
+    this.setState({
+      x: event.pageX,
+      y: event.pageY
+    })
   }
 
   incrementCount = () => {
@@ -23,7 +37,7 @@ class App extends Component {
   }
 
   render() {
-    const { count, isOn } = this.state
+    const { count, isOn, x, y } = this.state
 
     return (
       <>
@@ -41,6 +55,10 @@ class App extends Component {
           }}
           onClick={this.toggleColor}
         />
+
+        <h2>Mouse Position</h2>
+        <p>X position : {x}</p>
+        <p>Y position : {y}</p>
       </>
     )
   }

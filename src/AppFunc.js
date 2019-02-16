@@ -3,10 +3,23 @@ import React, { useState, useEffect } from 'react'
 const AppFunc = () => {
   const [count, setCount] = useState(0)
   const [isOn, setIsOn] = useState(false)
+  const [mousePosition, setMousePosition] = useState({ x: null, y: null })
 
   useEffect(() => {
     document.title = `You have clicked ${count} times!`
-  })
+    window.addEventListener('mousemove', handleMouseMove)
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+    }
+  }, [])
+
+  const handleMouseMove = event => {
+    setMousePosition({
+      x: event.pageX,
+      y: event.pageY
+    })
+  }
 
   const incrementCount = () => {
     setCount(prevCount => prevCount + 1)
@@ -35,6 +48,10 @@ const AppFunc = () => {
         alt="FlashLight"
         onClick={toggleColor}
       />
+
+      <h2>Mouse Position</h2>
+      {JSON.stringify(mousePosition, null, 2)}
+      <br />
     </>
   )
 }
