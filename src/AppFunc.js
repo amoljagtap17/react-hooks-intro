@@ -12,7 +12,10 @@ const AppFunc = () => {
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
     }
-  }, [])
+  }, [count])
+
+  // Above empty [] runs only on componentDidMount and componentWillUnmount
+  // If we specify something like count, any changes to this will re-render
 
   const handleMouseMove = event => {
     setMousePosition({
