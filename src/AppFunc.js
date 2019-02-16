@@ -4,18 +4,31 @@ const AppFunc = () => {
   const [count, setCount] = useState(0)
   const [isOn, setIsOn] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: null, y: null })
+  const [status, setStatus] = useState(navigator.onLine)
 
   useEffect(() => {
     document.title = `You have clicked ${count} times!`
     window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('online', handleOnline)
+    window.addEventListener('offline', handleOffline)
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('online', handleOnline)
+      window.removeEventListener('offline', handleOffline)
     }
   }, [count])
 
   // Above empty [] runs only on componentDidMount and componentWillUnmount
   // If we specify something like count, any changes to this will re-render
+
+  const handleOnline = () => {
+    setStatus(true)
+  }
+
+  const handleOffline = () => {
+    setStatus(false)
+  }
 
   const handleMouseMove = event => {
     setMousePosition({
@@ -55,6 +68,11 @@ const AppFunc = () => {
       <h2>Mouse Position</h2>
       {JSON.stringify(mousePosition, null, 2)}
       <br />
+
+      <h2>Network Status</h2>
+      <p>
+        You are <strong>{status ? 'online' : 'offline'}</strong>
+      </p>
     </>
   )
 }
